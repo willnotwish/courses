@@ -1,6 +1,4 @@
 
-
-
 - decorate @course_membership do |cm|
 
 	h3 = cm.course_name
@@ -14,6 +12,10 @@
 		- if cm.may_confirm?
 			p Your membership is <em>provisional</em>. Please #{link_to 'confirm it now', [:new, cm, :confirmation]}.
 		- elsif cm.payment_required?
-			p = link_to 'Pay now', [:new, cm, :paypal_token]
+			p You need to pay before your membership is confirmed.
+			p = link_to [:new, cm, :paypal_token] do
+					'Go to checkout
+					= fa_icon 'long-arrow-right'
+
 	- else
 		p Your membership is confirmed. We look forward to meeting you.

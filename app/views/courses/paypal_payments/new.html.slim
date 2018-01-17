@@ -1,8 +1,14 @@
-h2 Payment confirmation for #{@course_membership.course.name}
 
-p Please confirm you want to join this course. Your membership is not confirmed until you click the button. You are about to pay #{@payment.amount}
+
+h2 Payment confirmation
+
+p Nearly there. Please confirm you want to join the course and we'll collect the money from PayPal.
+
+/ .alert-box.warning 
+/ 	= fa_icon 'exclamation-circle'
+/ 	|&nbsp;Your membership is not confirmed until you click the button below.
 
 = simple_form_for @payment, url: [@course_membership, :paypal_payment] do |f|
-	= f.input :paypal_token, label: 'PayPal Token'
-	= f.input :paypal_payer_id, label: 'PayPal Payer ID'
-	= f.button :submit, 'Confirm'
+	= f.input :paypal_token, as: :hidden
+	= f.input :paypal_payer_id, as: :hidden
+	= f.button :submit, 'Yes, please. Count me in!'

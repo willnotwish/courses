@@ -1,8 +1,15 @@
-h2 Checkout
+- decorate @course_membership, class_name: "Courses::CourseMembershipDecorator" do |cm|
 
-p Payment is via PayPal. You may pay with a credit or debit card as a guest if you do not have a PayPal account.
+	h2 Checkout
+	hr
 
-p Click the button below to continue.
+	p You are about to purchase membership of our course <em>#{cm.course_name}</em>
 
-= simple_form_for @paypal_token, url: [@course_membership, :paypal_token]  do |f|
-	= f.button :submit
+	p This course costs #{cm.cost}
+
+	p Payment is via PayPal. You may pay with a credit or debit card as a guest if you do not have a PayPal account.
+
+	p Click the button below to continue. You will be taken to PayPal's website.
+
+	= simple_form_for @paypal_token, url: [@course_membership, :paypal_token]  do |f|
+		= image_submit_tag "https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"

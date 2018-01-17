@@ -1,14 +1,23 @@
-= debug "TODO - Breadcrumb trail: courses/course/enrol"
 
-p You must accept our terms and conditions before you can enrol. Please take the time to read them. They are important.
+- decorate @course, class_name: 'Courses::CourseDecorator' do |course|
+	h2 = course.name
 
-= simple_form_for [@course, @enrolment], url: course_enrolments_path(@course) do |f|
-	= f.input :terms, as: :boolean, label: false, inline_label: " I accept the terms and conditions"
-	= f.button :submit, 'Accept'
+	hr
 
-	/ p Payment is via PayPal. Click the button to continue.
+	h3.subheader Terms and Conditions
 
-	/ = image_submit_tag "https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"
+	p You must accept our terms and conditions before you can join the course. Please take the time to read them. They are important.
 
+	p 
+		em Please confirm that
 
+	ul
+		li you are over 18 years of age
+		li you agree to abide by our Club Rules
+		li you agree to keep your emergency contact information up to date
+		li you accept that the costs of the course will not be reimbursed after the course start date unless the course is cancelled by Spa Striders
+		li you are aware that the course fee does not include race entry to the Regency 10k
 
+	= simple_form_for [@course, @enrolment], url: course_enrolments_path(@course) do |f|
+		= f.input :terms, as: :boolean, label: false, inline_label: " I have read and understood the Terms and Conditions"
+		= f.button :submit, 'I accept'

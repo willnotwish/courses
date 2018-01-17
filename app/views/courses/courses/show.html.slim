@@ -1,21 +1,38 @@
 - decorate @course do |course|
 
   h3 = course.name
+  hr
+
+  h5.subheader Starts on: #{l course.starts_on, format: :long}
+
+  hr
 
   p = course.description
 
-  p Course starts on #{l course.starts_on}
   - if course.has_duration?
     p Duration: #{course.duration_in_weeks} weeks
 
   - if course.has_cost?
-    p This course costs #{course.cost}
+    p Cost:  #{course.cost}
 
   - if course.membership_status( current_user ) == :enrolled
-    p You are enrolled on this course. #{link_to 'View your membership', course.confirmed_membership( current_user )}
+    hr
+    p 
+      em
+        = fa_icon 'check-circle'
+        |&nbsp;You are enrolled on this course.
+    p = link_to course.confirmed_membership( current_user ) do
+      'View your membership
+      = fa_icon 'long-arrow-right'
 
   - elsif course.membership_status( current_user ) == :enrolled_provisionally
-    .alert.alert-danger Please note. Your membership of this course is provisional. You cannot attend the course until your membership is confirmed. #{link_to 'More information', course.provisional_membership( current_user )}
+    .alert-box.alert 
+      = fa_icon 'exclamation-triangle'
+      |&nbsp;Please note. Your membership of this course is <em>provisional</em>. You cannot attend until payment is received.
+
+    p = link_to [:new, course.provisional_membership( current_user ), :paypal_token] do
+      'Pay now
+      = fa_icon 'paypal'
 
   - elsif !course.open_for_enrolment?
     p.alert.alert--info Enrolment doesn't open until #{l course.enrolment_opens_at}. Please come back then to sign up. Thanks for your interest.
@@ -26,7 +43,9 @@
   - else
     - if course.space_limited? 
       p There are #{course.places_available} places available.
-    .button.button--enrol #{link_to 'Enrol now', [:new, course, :enrolment]}
+      p = link_to [:new, course, :enrolment] do
+        'Enrol now
+        = fa_icon 'long-arrow-right'
 
 
    

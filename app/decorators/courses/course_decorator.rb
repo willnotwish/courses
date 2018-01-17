@@ -9,6 +9,10 @@ module Courses
 		         :guest_period_expires_at, 
 		         :enrolment_opens_at, 
 		         :capacity, 
+		         :course_memberships,
+		         :members,
+		         :confirmed_members,
+		         :provisional_members,
 		         :product, 
 		         :description, 
 			to: :object
