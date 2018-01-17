@@ -2,7 +2,6 @@
 
 require 'aasm'
 
-
 module Courses
 	class CourseMembershipDecorator < ApplicationDecorator
 
