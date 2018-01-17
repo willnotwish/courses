@@ -13,15 +13,6 @@ module Courses
 
 		def decorator_class_for( model )
 			class_name = self.class.decorator_class_name || "#{controller_path.singularize}_decorator".classify
-			# unless class_name
-			# 	model_class_name = model.class.name.demodulize.underscore
-			# 	parts = controller_path.split('/')
-			# 	if parts.length == 1
-			# 		class_name = "#{model_class_name}_decorator".classify
-			# 	else
-			# 		class_name = "#{parts.first}/#{model_class_name}_decorator".classify
-			# 	end
-			# end
 			class_name.constantize
 		end
 
