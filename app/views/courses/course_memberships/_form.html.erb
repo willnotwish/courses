@@ -1,0 +1,32 @@
+<%= form_with(model: course_membership, local: true) do |form| %>
+  <% if course_membership.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(course_membership.errors.count, "error") %> prohibited this course_membership from being saved:</h2>
+
+      <ul>
+      <% course_membership.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :aasm_state %>
+    <%= form.text_field :aasm_state, id: :course_membership_aasm_state %>
+  </div>
+
+  <div class="field">
+    <%= form.label :course_id %>
+    <%= form.text_field :course_id, id: :course_membership_course_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :member_id %>
+    <%= form.text_field :member_id, id: :course_membership_member_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

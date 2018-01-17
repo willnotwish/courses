@@ -1,0 +1,9 @@
+/ new.html.slim
+
+h1 New course
+= render partial: 'form', object: @operation, as: 'course'
+/ = render partial: 'form', locals: { operation: @operation, url: [:admin, :courses], method: :post }
+
+
+hr
+= link_to 'Back to list', [:admin, :courses]

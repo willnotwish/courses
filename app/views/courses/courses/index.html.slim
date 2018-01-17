@@ -1,0 +1,9 @@
+.index
+  .index__header
+    h2 Courses
+  .index__results
+    ul
+      - @courses.each do |course|
+        li
+          .course.course--list
+            == render partial: 'list', locals: { course: decorate(course) }

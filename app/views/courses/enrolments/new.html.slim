@@ -1,0 +1,14 @@
+= debug "TODO - Breadcrumb trail: courses/course/enrol"
+
+p You must accept our terms and conditions before you can enrol. Please take the time to read them. They are important.
+
+= simple_form_for [@course, @enrolment], url: course_enrolments_path(@course) do |f|
+	= f.input :terms, as: :boolean, label: false, inline_label: " I accept the terms and conditions"
+	= f.button :submit, 'Accept'
+
+	/ p Payment is via PayPal. Click the button to continue.
+
+	/ = image_submit_tag "https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"
+
+
+

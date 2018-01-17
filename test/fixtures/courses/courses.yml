@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: courses_courses
+#
+#  id                      :integer          not null, primary key
+#  name                    :string(255)
+#  starts_at               :datetime
+#  duration                :integer
+#  guest_period_expires_at :datetime
+#  enrolment_opens_at      :datetime
+#  capacity                :integer
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  product_id              :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  starts_at: 2018-01-08 10:10:03
+  duration: 1
+  guest_period_expires_at: 2018-01-08 10:10:03
+  enrolment_opens_at: 2018-01-08 10:10:03
+  capacity: 1
+
+two:
+  name: MyString
+  starts_at: 2018-01-08 10:10:03
+  duration: 1
+  guest_period_expires_at: 2018-01-08 10:10:03
+  enrolment_opens_at: 2018-01-08 10:10:03
+  capacity: 1

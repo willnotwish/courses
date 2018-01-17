@@ -1,0 +1,6 @@
+/ _list.html.slim
+
+= link_to course do
+	.course__name= course.name
+	.course__start-date Starts on #{l course.starts_on}
+	.course__membership-status = course.membership_status( current_user )

@@ -1,0 +1,15 @@
+h1 Your courses
+
+table
+  thead
+    tr
+      th Course
+      th Membership status
+      th
+
+  tbody
+    - @course_memberships.each do |cm|
+      tr
+        td = link_to cm.course.name, cm.course
+        td = cm.aasm_state
+        td = link_to 'view', cm

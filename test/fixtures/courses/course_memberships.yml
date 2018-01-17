@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: courses_course_memberships
+#
+#  id         :integer          not null, primary key
+#  aasm_state :string(255)
+#  course_id  :integer
+#  member_id  :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  payment_id :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aasm_state: MyString
+  course: one
+  member: one
+
+two:
+  aasm_state: MyString
+  course: two
+  member: two

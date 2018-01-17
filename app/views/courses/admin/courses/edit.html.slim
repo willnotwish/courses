@@ -1,0 +1,9 @@
+/ edit.html.slim
+
+
+h1 Edit course
+= render partial: 'form', object: @operation, as: :course
+
+
+hr
+= link_to 'Back to list', [:admin, :courses]

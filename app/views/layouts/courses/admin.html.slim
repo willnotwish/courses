@@ -1,0 +1,21 @@
+/ admin.html.slim
+
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title Courses Admin
+    = stylesheet_link_tag    "courses/application", media: "all"
+    = javascript_include_tag "courses/application"
+    = csrf_meta_tags
+  body
+    .courses
+      .courses__header
+        h3.courses-header__title Courses admin
+        hr
+
+      .courses__flash.courses__flash--notice = flash.notice
+      .courses__flash.courses__flash--alert = flash.alert
+
+      .courses__content
+        = yield

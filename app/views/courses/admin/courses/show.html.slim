@@ -1,0 +1,22 @@
+/ show.html.slim
+
+- decorate @course do |course|
+
+	.course
+
+		.course__nav
+			h4 Breadcrumbs
+			ul
+				li = link_to 'All courses', [:admin, :courses]
+				li = link_to course.name, [:admin, course]
+
+		.course__nav
+			h4 Actions
+			ul
+				li= link_to 'edit', [:edit, :admin, course], class: 'nav-action nav-action--edit'
+				- if course.empty?
+					li= link_to 'delete', [:admin, course], method: :delete, class: 'nav-action nav-action--delete', data: { confirm: "Are you sure you want to delete this course?" }
+
+		.course__detail
+			== render partial: 'course', object: course
+

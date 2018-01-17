@@ -1,0 +1,46 @@
+/ Expects local 'course' to be defined
+
+.course-header
+	h2 
+		= course.name
+		|&nbsp;
+		- if course.started?
+			span.course-label.course-label--started started
+		- if course.has_space?
+			span.course-label.course-label--has-space spaces
+
+- if course.description?
+	.course-description
+		p = course.description
+
+- if course.product
+	.course-product
+		p Product: #{course.product_name} (#{course.cost})
+
+.course-timing
+	h3 Timing
+
+	.course-timing__start
+		- if course.started?
+			'Started on #{l course.started_on}
+			small 
+				|(#{course.started_on_dotiw} ago)
+		- else
+			'Starts on #{l course.starts_on}
+			small 
+				|(in about #{course.starts_on_dotiw})
+
+	- if course.has_duration?
+		.course-timing__duration Lasts for #{course.duration_in_weeks} weeks.
+
+.course-members
+	h3 Enrolment
+
+	- if course.empty? && course.space_limited?
+		p No one is currently enrolled on this course; #{course.places_available} places are available.
+	- else
+		p Currently, this course has #{course.confirmed_member_count} member(s), and #{course.provisional_member_count} provisional enrolments.
+
+.course-notes
+	- if course.affects_guest_period?
+		p Members of this course will have their guest period extended to #{l course.guest_period_expires_on}.

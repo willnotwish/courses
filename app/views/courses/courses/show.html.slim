@@ -1,0 +1,32 @@
+- decorate @course do |course|
+
+  h3 = course.name
+
+  p = course.description
+
+  p Course starts on #{l course.starts_on}
+  - if course.has_duration?
+    p Duration: #{course.duration_in_weeks} weeks
+
+  - if course.has_cost?
+    p This course costs #{course.cost}
+
+  - if course.membership_status( current_user ) == :enrolled
+    p You are enrolled on this course. #{link_to 'View your membership', course.confirmed_membership( current_user )}
+
+  - elsif course.membership_status( current_user ) == :enrolled_provisionally
+    .alert.alert-danger Please note. Your membership of this course is provisional. You cannot attend the course until your membership is confirmed. #{link_to 'More information', course.provisional_membership( current_user )}
+
+  - elsif !course.open_for_enrolment?
+    p.alert.alert--info Enrolment doesn't open until #{l course.enrolment_opens_at}. Please come back then to sign up. Thanks for your interest.
+
+  - elsif course.full?
+    p.alert.alert--warning We are sorry, but this course is full. Thanks for your interest.
+
+  - else
+    - if course.space_limited? 
+      p There are #{course.places_available} places available.
+    .button.button--enrol #{link_to 'Enrol now', [:new, course, :enrolment]}
+
+
+   

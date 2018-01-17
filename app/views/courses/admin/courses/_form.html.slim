@@ -1,0 +1,32 @@
+
+= simple_form_for [:admin, course] do |f|
+
+  / - if course.errors.any?
+  /   #error_explanation
+  /     h2 #{pluralize(course.errors.count, "error")} prevented this course from being saved:
+  /     ul
+  /       - course.errors.full_messages.each do |message|
+  /         li= message
+  
+  fieldset
+    legend Basics
+    = f.input :name, label: 'Name of course'
+    = f.input :capacity, label: 'Maximum number of attendees'
+    = f.input :description, as: :text
+  
+  fieldset
+    legend Timing
+    = f.input :starts_at, as: :datetime
+    = f.input :duration_in_weeks, as: :integer
+    = f.input :enrolment_opens_at, as: :datetime
+
+  fieldset
+    legend Cost
+    = f.input :product_id, collection: Product.all, label_method: ->(product) { "#{product.name} (#{number_to_currency product.price/100, unit: '£'})" }
+
+  fieldset
+    legend Other
+    = f.input :guest_period_expires_at, as: :datetime
+
+  = f.button :submit
+

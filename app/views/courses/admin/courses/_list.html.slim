@@ -1,0 +1,10 @@
+/ _list.html.slim
+
+/ This receives a (decorated) course
+
+.row
+	.large-4.columns = course.name
+	.large-4.columns Starts on #{l course.starts_on}
+	.large-3.columns has #{course.member_count} members
+	.large-1.columns = link_to 'view', [:admin, course.object]
+
