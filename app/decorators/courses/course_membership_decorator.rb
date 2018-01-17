@@ -40,7 +40,7 @@ module Courses
 			payment.present?
 		end
 
-		# Payment is required if the course reates to a product which is chargeable and no payment has already been made
+		# Payment is required if the course reates to a product which is chargeable but no payment exists
 		def payment_required?
 			has_cost? && !payment_present?
 		end
