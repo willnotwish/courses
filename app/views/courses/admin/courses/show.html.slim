@@ -20,3 +20,11 @@
 		.course__detail
 			== render partial: 'course', object: course
 
+		.course__members
+			h4 Confirmed members
+			ul
+				- course.members.each do |member|
+					- decorate member, class_name: 'Courses::Admin::MemberDecorator' do |m|
+						li
+							== render partial: 'member', object: m
+

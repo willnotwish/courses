@@ -4,6 +4,8 @@ module Courses
 	module Admin
 		class MemberDecorator < ApplicationDecorator
 			
+			delegate :name, to: :object
+
 			def memberships
 				CourseMembership.where( member: object )
 			end
