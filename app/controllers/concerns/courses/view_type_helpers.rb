@@ -11,7 +11,7 @@ module Courses
 					              :view_type_class_name
 			end
 
-	    helper_method :current_view_type
+	    helper_method :current_view_type, :view_type_selector
 			before_action :build_view_type, only: [:index]
 		end
 
@@ -37,6 +37,10 @@ module Courses
 
 		def default_view_type_params
 			{ t: 'list' }
+		end
+
+		def view_type_selector( options = {} )
+			'View type selector coming soon'	
 		end
 
 		module ClassMethods

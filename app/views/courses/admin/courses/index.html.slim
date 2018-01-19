@@ -1,49 +1,30 @@
 / index.html.slim
 
+
+nav.breadcrumbs
+  = link_to 'Home', [:admin, :root]
+  = link_to 'Courses', :courses, class: 'current'  
+
+
 .index
+
   .index__header
     h2 Courses
+
+  .index__actions
+    ul
+      li = link_to( 'New course', [:new, :admin, :course] )
+      li = link_to( 'Download CSV', format: :csv )
+
   .index__filter
-    h3 Filter
-    p = debug 'coming soon'
+    .alert-box.warning Filter/search coming soon
+
   .index__view-type
-    h3 Views
-    = view_type_selector current_view_type
-    = link_to( 'Download CSV', {format: :csv} )
-    = debug "TODO: ordering"
+    = view_type_selector
+
   .index__results class="index__results--#{current_view_type}"
     ul
       - @courses.each do |course|
         li
-          .course
-            == render partial: current_view_type, locals: { course: decorate(course) }
-            
+          == render partial: current_view_type, locals: { course: decorate(course) }
 
-
-/ table
-/   thead
-/     tr
-/       th Name
-/       th Starts at
-/       th Duration
-/       th Guest period expires at
-/       th Enrolment opens at
-/       th Capacity
-/       th colspan="3" 
-/   tbody
-/     - @courses.each do |course|
-/       tr
-/         td= course.name
-/         td= course.starts_at
-/         td= course.duration
-/         td= course.guest_period_expires_at
-/         td= course.enrolment_opens_at
-/         td= course.capacity
-/         td= link_to 'Show', [:admin, course]
-/         td= link_to 'Edit', [:edit, :admin, course]
-/         td= link_to 'Destroy', [:admin, course], method: :delete, data: { confirm: 'Are you sure you want to delete this course?' }
-
-hr
-p Navigation
-
-= link_to 'New Course', [:new, :admin, :course]

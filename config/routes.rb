@@ -11,9 +11,12 @@ Courses::Engine.routes.draw do
   end
 
   namespace :admin do
-	  resources :courses
-	  # resources :course_memberships, path: 'course-memberships'
-	  root to: 'home#index'
+	  resources :courses do
+      resources :course_memberships, path: 'course-memberships', only: :index
+    end
+    resources :course_memberships, path: 'course-memberships', only: [:index, :show]
+
+	  root to: 'application#index'
   end
 
   root to: 'courses#index'

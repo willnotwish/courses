@@ -1,17 +1,23 @@
 / show.html.slim
 
 - decorate @course do |course|
-
 	.course
+		.course__nav.course__nav--breadcrumbs
+			nav.breadcrumbs
+			  = link_to 'Home', [:admin, :root]
+			  = link_to 'Courses', [:admin, :courses]
+			  = link_to course.name, [:admin, course], class: 'current'
+
+		.course__header
+			h2 
+				= course.name
+				|&nbsp;
+				- if course.started?
+					span.label.course-label--started started
+				- if course.has_space?
+					span.label.success.course-label--has-space spaces
 
 		.course__nav
-			h4 Breadcrumbs
-			ul
-				li = link_to 'All courses', [:admin, :courses]
-				li = link_to course.name, [:admin, course]
-
-		.course__nav
-			h4 Actions
 			ul
 				li= link_to 'edit', [:edit, :admin, course], class: 'nav-action nav-action--edit'
 				- if course.empty?
@@ -21,10 +27,9 @@
 			== render partial: 'course', object: course
 
 		.course__members
-			h4 Confirmed members
-			ul
-				- course.members.each do |member|
-					- decorate member, class_name: 'Courses::Admin::MemberDecorator' do |m|
-						li
-							== render partial: 'member', object: m
+			h4 Confirmed so far
+			- course.course_memberships.each do |course_membership|
+				- decorate course_membership, class_name: 'Courses::CourseMembershipDecorator' do |cm|
+						== render partial: 'course_membership', object: cm
+
 

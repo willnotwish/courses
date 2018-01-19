@@ -2,16 +2,10 @@ require_dependency "courses/application_controller"
 
 module Courses
   module Admin
-    class CoursesController < ApplicationController  
+    class CoursesController < Admin::ApplicationController  
       include ViewTypeHelpers
 
-      prepend_before_action :authenticate_admin!
-      skip_before_action :authenticate_user!  
       before_action :set_course, only: [:show, :edit, :update, :destroy]
-
-      respond_to :html, :json
-
-      layout 'courses/admin'
 
       def index
         @courses = Course.all

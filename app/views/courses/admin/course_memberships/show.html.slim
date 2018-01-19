@@ -1,0 +1,27 @@
+- decorate @course_membership, class_name: 'Courses::Admin::CourseMembershipDecorator' do |cm|
+
+	- course = cm.course
+	- member = cm.member
+
+	.course-membership
+		.course-membership__nav.course__nav--breadcrumbs
+			nav.breadcrumbs
+			  = link_to 'Home', [:admin, :root]
+			  = link_to 'Courses', [:admin, :courses]
+			  = link_to cm.course_name, [:admin, course]
+			  = link_to cm.member_name, [:admin, cm], class: 'current'
+
+		.course-membership__header
+			h2 
+				= cm.member_name
+				|&nbsp;
+				- if cm.confirmed?
+					span.label.success.course-label--has-space confirmed
+
+		.course-membership__payment
+			- if cm.paid?
+				'Paid #{cm.amount_paid} on #{cm.payment_date}. 
+				= link_to 'View payment details', main_app.url_for([:admin, cm.payment])
+			- else
+				alert-box.warning Not yet paid
+
