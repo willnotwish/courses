@@ -11,6 +11,8 @@ module Courses
 			         :enrolment_opens_at, 
 			         :capacity, 
 			         :course_memberships,
+			         :confirmed_memberships,
+			         :provisional_memberships,
 			         :members,
 			         :confirmed_members,
 			         :provisional_members,

@@ -26,10 +26,27 @@
 		.course__detail
 			== render partial: 'course', object: course
 
+		hr
 		.course__members
-			h4 Confirmed so far
-			- course.course_memberships.each do |course_membership|
-				- decorate course_membership, class_name: 'Courses::CourseMembershipDecorator' do |cm|
-						== render partial: 'course_membership', object: cm
+			- if course.empty?
+				p No one is currently enrolled on this course; #{course.places_available} places are available.
+			- else
+				.row
+					.columns.large-6
+						h4 
+							'Confirmed
+							.label.success.round = course.confirmed_member_count
+
+						- course.confirmed_memberships.each do |course_membership|
+							- decorate course_membership, class_name: 'Courses::Admin::CourseMembershipDecorator' do |cm|
+									== render partial: 'course_membership', object: cm
+					.columns.large-6
+						h4 
+							'Provisional
+							.label.warning.round = course.provisional_member_count
+
+						- course.provisional_memberships.each do |course_membership|
+							- decorate course_membership, class_name: 'Courses::Admin::CourseMembershipDecorator' do |cm|
+									== render partial: 'course_membership', object: cm
 
 

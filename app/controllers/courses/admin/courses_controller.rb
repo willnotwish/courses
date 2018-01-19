@@ -1,4 +1,3 @@
-require_dependency "courses/application_controller"
 
 module Courses
   module Admin

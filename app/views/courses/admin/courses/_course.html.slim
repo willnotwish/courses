@@ -33,12 +33,12 @@
 		|&nbsp;
 		= link_to "#{course.product_name} (#{course.cost})", main_app.admin_product_path( course.product )
 
-.course-members
-	hr
-	h3 Memberships
+/ .course-members
+/ 	hr
+/ 	h3 Memberships
 
-	- if course.empty? && course.space_limited?
-		p No one is currently enrolled on this course; #{course.places_available} places are available.
-	- else
-		p Currently, this course has #{course.confirmed_member_count} confirmed and #{course.provisional_member_count} provisional memberships.
+/ 	- if course.empty? && course.space_limited?
+/ 		p No one is currently enrolled on this course; #{course.places_available} places are available.
+/ 	- else
+/ 		p Currently, this course has #{course.confirmed_member_count} confirmed and #{course.provisional_member_count} provisional memberships.
 
