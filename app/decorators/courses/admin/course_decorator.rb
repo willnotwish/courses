@@ -9,6 +9,7 @@ module Courses
 			         :duration, 
 			         :guest_period_expires_at, 
 			         :enrolment_opens_at, 
+			         :enrolment_closes_at, 
 			         :capacity, 
 			         :course_memberships,
 			         :confirmed_memberships,
@@ -25,6 +26,7 @@ module Courses
 			include Decoration::Course::Enrolment
 			include Decoration::Course::Pricing
 			include Decoration::Course::Description
+
 		end
 	end
 end

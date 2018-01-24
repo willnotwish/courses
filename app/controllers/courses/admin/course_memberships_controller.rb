@@ -1,4 +1,4 @@
-# require_dependency "courses/application_controller"
+require_dependency "courses/admin/application_controller"
 
 module Courses
   class Admin::CourseMembershipsController < Admin::ApplicationController

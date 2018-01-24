@@ -8,6 +8,7 @@ module Courses
 		         :duration, 
 		         :guest_period_expires_at, 
 		         :enrolment_opens_at, 
+		         :enrolment_closes_at,
 		         :capacity, 
 		         :course_memberships,
 		         :members,
@@ -25,6 +26,14 @@ module Courses
 
 		def membership_scope
 			CourseMembership.extend( Courses::Scopes::Membership ).for_course( object )			
+		end
+
+		def before_enrolment_opens?
+			enrolment_opens_at.present? && Time.now < enrolment_opens_at
+		end
+
+		def after_enrolment_closed?
+			enrolment_closes_at.present? && Time.now > enrolment_closes_at
 		end
 
 		# def membership_scope( user )

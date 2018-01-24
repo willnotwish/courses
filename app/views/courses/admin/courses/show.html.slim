@@ -14,13 +14,23 @@
 				|&nbsp;
 				- if course.started?
 					span.label.course-label--started started
+					|&nbsp;
 				- if course.has_space?
 					span.label.success.course-label--has-space spaces
+					|&nbsp;
+				- if course.open_for_enrolment?
+					span.label.success.course-label--has-space enrolment open
+					|&nbsp;
+				- else
+					span.label.alert.course-label--has-space enrolment closed
+					|&nbsp;
+
 
 		.course__nav
 			ul
-				li= link_to 'edit', [:edit, :admin, course], class: 'nav-action nav-action--edit'
-				- if course.empty?
+				- if course.may_be_updated?
+					li= link_to 'edit', [:edit, :admin, course], class: 'nav-action nav-action--edit'
+				- if course.empty? && course.may_be_deleted?
 					li= link_to 'delete', [:admin, course], method: :delete, class: 'nav-action nav-action--delete', data: { confirm: "Are you sure you want to delete this course?" }
 
 		.course__detail

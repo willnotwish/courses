@@ -35,4 +35,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'factory_bot_rails'
   s.add_development_dependency 'annotate'
   s.add_development_dependency 'activemerchant'
+  s.add_development_dependency "pundit"
 end

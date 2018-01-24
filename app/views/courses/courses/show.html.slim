@@ -35,7 +35,13 @@
       = fa_icon 'paypal'
 
   - elsif !course.open_for_enrolment?
-    p.alert.alert--info Enrolment doesn't open until #{l course.enrolment_opens_at}. Please come back then to sign up. Thanks for your interest.
+    p.alert-box.warning 
+      = fa_icon 'exclamation-triangle'
+      |&nbsp;You cannot enrol on this course right now. 
+    - if course.before_enrolment_opens?
+      |Enrolment doesn't open until #{l course.enrolment_opens_at}. Please come back then. Thanks for your interest.
+    - elsif course.after_enrolment_closed?
+      |Enrolment is now closed. Thanks for your interest.
 
   - elsif course.full?
     p.alert.alert--warning We are sorry, but this course is full. Thanks for your interest.

@@ -22,9 +22,22 @@ module Courses
 				end
 				alias_method :enrolment_opened_on, :enrolment_opens_on
 
+				def enrolment_closes_on
+					enrolment_closes_at.to_date		
+				end
+				alias_method :enrolment_closed_on, :enrolment_closes_on
+
 				def open_for_enrolment?
-					return true if enrolment_opens_at.blank?
-					enrolment_opens_at < Time.now
+					t = Time.now
+					if enrolment_opens_at.present? && enrolment_closes_at.present?
+						t > enrolment_opens_at && t < enrolment_closes_at
+					elsif enrolment_opens_at.present? && enrolment_closes_at.blank?
+						t > enrolment_opens_at
+					elsif enrolment_opens_at.blank? && enrolment_closes_at.present?
+						t < enrolment_closes_at
+					else
+						true
+					end
 				end
 
 				def started?

@@ -21,7 +21,8 @@
 		.course-membership__payment
 			- if cm.paid?
 				'Paid #{cm.amount_paid} on #{cm.payment_date}. 
-				= link_to 'View payment details', main_app.url_for([:admin, cm.payment])
+				- if policy(cm.payment).show?
+					= link_to 'View payment details', main_app.url_for([:admin, cm.payment])
 			- else
 				alert-box.warning Not yet paid
 

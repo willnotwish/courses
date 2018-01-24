@@ -19,6 +19,10 @@ require 'rails_helper'
 module Courses
   RSpec.describe Course, type: :model do
     it{ is_expected.to be }
+
+    it{ is_expected.to have_db_column(:enrolment_opens_at)}
+    it{ is_expected.to have_db_column(:enrolment_closes_at)}
+
     it{ is_expected.to have_many(:course_memberships) }
     it{ is_expected.to have_many(:members) }
     it{ is_expected.to belong_to(:product) }

@@ -13,6 +13,8 @@ module Courses
 			         :duration=,
 			         :enrolment_opens_at,
 			         :enrolment_opens_at=,
+			         :enrolment_closes_at,
+			         :enrolment_closes_at=,
 			         :capacity,
 			         :capacity=,
 			         :guest_period_expires_at,

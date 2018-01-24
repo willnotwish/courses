@@ -1,3 +1,4 @@
+require_dependency "courses/admin/application_controller"
 
 module Courses
   module Admin
@@ -45,12 +46,13 @@ module Courses
     private
 
       def set_course
-        @course = Course.find params[:id]
+        @course = policy_scope(Course).find params[:id]
+        authorize @course   # pundit
       end
 
       def course_params
         params.fetch( :course, {} )
-          .permit( :name, :starts_at, :duration_in_weeks, :guest_period_expires_at, :enrolment_opens_at, :capacity, :description, :product_id )
+          .permit( :name, :starts_at, :duration_in_weeks, :guest_period_expires_at, :enrolment_opens_at, :enrolment_closes_at, :capacity, :description, :product_id )
           .merge( course: @course || Course.new )
       end
 

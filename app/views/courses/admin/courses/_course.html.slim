@@ -18,7 +18,12 @@
 				|(in about #{course.starts_on_dotiw})
 
 	- if course.has_duration?
-		.course-timing__duration Lasts for #{course.duration_in_weeks} weeks.
+		p.course-timing__duration Lasts for #{course.duration_in_weeks} weeks
+
+	- if course.enrolment_opens_at.present?
+		.course-timing__enrolment-opens Enrolment opens #{l course.enrolment_opens_at}
+	- if course.enrolment_closes_at.present?
+		.course-timing__enrolment-opens Enrolment closes #{l course.enrolment_closes_at}
 
 .course-notes
 	- if course.affects_guest_period?
@@ -31,7 +36,7 @@
 		hr
 		span.label Product
 		|&nbsp;
-		= link_to "#{course.product_name} (#{course.cost})", main_app.admin_product_path( course.product )
+		= link_to_if policy(course.product).show?, "#{course.product_name} (#{course.cost})", main_app.admin_product_path( course.product )
 
 / .course-members
 / 	hr

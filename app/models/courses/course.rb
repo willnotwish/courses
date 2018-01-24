@@ -26,5 +26,28 @@ module Courses
   	has_many :provisional_members, through: :provisional_memberships, source: :member
 
   	belongs_to :product, required: false
+
+  	has_many :user_roles, as: :resource
+
+  	class << self
+  		def accessible_to( user, action = 'show' )
+        return all if user.user_roles.where( role: nil ).present?   # case 1 - user can do anything
+
+        user_roles = user.user_roles.joins( role: { role_permissions: :permission } ).merge( Permission.where( name: [action, nil] ) ).distinct
+
+        # Case 2: admin with access to *all* resources, irrespective of class or id
+        if user_roles.where( resource_type: nil ).present?
+          all
+        
+        # Case 3: with access to *all* records of this class (eg, courses), irrespective of id
+        elsif user_roles.where( resource_type: self.name, resource_id: nil ).present?
+          all 
+
+        # Case 4: with access to a particular course (inner join)
+        else
+          joins( :user_roles ).merge user_roles
+        end
+  		end
+  	end
   end
 end

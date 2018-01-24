@@ -15,8 +15,10 @@ Courses::Engine.routes.draw do
       resources :course_memberships, path: 'course-memberships', only: :index
     end
     resources :course_memberships, path: 'course-memberships', only: [:index, :show]
+    resource :dashboard, only: :show, controller: :dashboard
 
-	  root to: 'application#index'
+	  # root to: 'application#index'
+    root to: 'dashboard#show'
   end
 
   root to: 'courses#index'

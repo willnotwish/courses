@@ -1,0 +1,17 @@
+h2 Courses dashboard
+hr
+
+- courses = policy_scope( @dashboard.courses )
+- if courses.present?
+	- courses.each do |record|
+		- decorate( record, class_name: 'Courses::Admin::CourseDecorator' ) do |course|
+			= link_to [:admin, course] do
+				.row
+					.large-4.columns = course.name
+					.large-4.columns = course.starts_on
+					.large-4.columns = course.confirmed_member_count
+- else
+	.alert-box.info 
+		= fa_icon 'exclamation-circle'
+		|&nbsp; You do not have admin access to any courses here. If you think this is wrong, request access from an admin, or ask them to check.
+
