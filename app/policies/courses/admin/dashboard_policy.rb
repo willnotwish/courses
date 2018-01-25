@@ -3,7 +3,7 @@ module Courses
     class DashboardPolicy < ApplicationPolicy
 
       def show?
-        user.has_permission_to? :show, :dashboard
+        user.has_permission_to? :dashboard, 'courses/course'
       end
 
       class Scope < Scope

@@ -4,8 +4,7 @@
 	.course
 		.course__nav.course__nav--breadcrumbs
 			nav.breadcrumbs
-			  = link_to 'Home', [:admin, :root]
-			  = link_to 'Courses', [:admin, :courses]
+			  = link_to 'Dashboard', [:admin, :root]
 			  = link_to course.name, [:admin, course], class: 'current'
 
 		.course__header
