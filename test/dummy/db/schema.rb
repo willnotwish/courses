@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180124125835) do
+ActiveRecord::Schema.define(version: 20180126112117) do
 
   create_table "courses_course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "aasm_state"
@@ -39,6 +39,17 @@ ActiveRecord::Schema.define(version: 20180124125835) do
     t.index ["product_id"], name: "index_courses_courses_on_product_id"
   end
 
+  create_table "courses_user_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "role_id"
+    t.bigint "user_id"
+    t.bigint "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_courses_user_roles_on_course_id"
+    t.index ["role_id"], name: "index_courses_user_roles_on_role_id"
+    t.index ["user_id"], name: "index_courses_user_roles_on_user_id"
+  end
+
   create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "amount"
     t.datetime "created_at", null: false
@@ -59,12 +70,40 @@ ActiveRecord::Schema.define(version: 20180124125835) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_permissions_on_name"
+  end
+
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.text "description"
     t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "role_permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "role_id"
+    t.bigint "permission_id"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
+    t.index ["resource_type", "resource_id"], name: "index_role_permissions_on_resource_type_and_resource_id"
+    t.index ["role_id"], name: "index_role_permissions_on_role_id"
+  end
+
+  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_roles_on_name"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -75,4 +114,9 @@ ActiveRecord::Schema.define(version: 20180124125835) do
   end
 
   add_foreign_key "courses_course_memberships", "courses_courses", column: "course_id"
+  add_foreign_key "courses_user_roles", "courses_courses", column: "course_id"
+  add_foreign_key "courses_user_roles", "roles"
+  add_foreign_key "courses_user_roles", "users"
+  add_foreign_key "role_permissions", "permissions"
+  add_foreign_key "role_permissions", "roles"
 end
