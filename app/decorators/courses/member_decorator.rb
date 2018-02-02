@@ -6,7 +6,5 @@ module Courses
 		
 		delegate :name, to: :object
 
-
-
 	end
 end

@@ -20,16 +20,17 @@ module Courses
 
 		def save
 			return false if invalid?
+			course_membership.confirm! payment
 
-			PaypalPayment.transaction do
-				paypal_payment.save && course_membership.update( payment: paypal_payment, aasm_state: 'confirmed' )
-			end
+			# PaypalPayment.transaction do
+			# 	paypal_payment.save && course_membership.update( payment: paypal_payment, aasm_state: 'confirmed' )	
+			# end
 		end
 
 	private
 
-		def paypal_payment
-			@paypal_payment ||= PaypalPayment.new( token: paypal_token, payer_id: paypal_payer_id, ip_address: ip_address, amount: amount, currency: currency )
+		def payment
+			PaypalPayment.new( token: paypal_token, payer_id: paypal_payer_id, ip_address: ip_address, amount: amount, currency: currency )
 		end
 	end
 end

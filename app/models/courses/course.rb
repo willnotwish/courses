@@ -1,3 +1,5 @@
+require_dependency 'courses/course_membership'
+
 # == Schema Information
 #
 # Table name: courses_courses
@@ -14,6 +16,8 @@
 #  product_id              :integer
 #
 
+require 'aasm'
+
 module Courses
   class Course < ApplicationRecord
   	has_many :course_memberships
@@ -27,27 +31,53 @@ module Courses
 
   	belongs_to :product, required: false
 
-  	has_many :user_roles, as: :resource
+    has_many :user_roles
 
-  	class << self
-  		def accessible_to( user, action = 'show' )
-        return all if user.user_roles.where( role: nil ).present?   # case 1 - user can do anything
+    include AASM
+    aasm do 
+      state :draft, initial: true
+      state :unpublished, enter: ->(course) { course.published_at = nil }
+      state :published, enter: ->(course) { course.published_at = Time.now }
 
-        user_roles = user.user_roles.joins( role: { role_permissions: :permission } ).merge( Permission.where( name: [action, nil] ) ).distinct
+      event :publish do
+        transitions from: [:draft, :unpublished], to: :published
+      end
 
-        # Case 2: admin with access to *all* resources, irrespective of class or id
-        if user_roles.where( resource_type: nil ).present?
-          all
-        
-        # Case 3: with access to *all* records of this class (eg, courses), irrespective of id
-        elsif user_roles.where( resource_type: self.name, resource_id: nil ).present?
-          all 
+      event :unpublish do
+        transitions from: :published, to: :unpublished
+      end
+    end
 
-        # Case 4: with access to a particular course (inner join)
-        else
-          joins( :user_roles ).merge user_roles
-        end
-  		end
-  	end
+    class << self
+      def with_membership_for( member )
+        joins( :course_memberships ).merge( CourseMembership.where( member: member ) )
+      end
+
+      def with_confirmed_membership_for( member )
+        joins( :confirmed_memberships ).merge( CourseMembership.where( member: member ) )
+      end
+    end
   end
 end
+
+
+# class << self
+#   def accessible_to( user, action = 'show' )
+#      return all if user.user_roles.where( role: nil ).present?   # case 1 - user can do anything
+
+#      user_roles = user.user_roles.joins( role: { role_permissions: :permission } ).merge( Permission.where( name: [action, nil] ) ).distinct
+
+#      # Case 2: admin with access to *all* resources, irrespective of class or id
+#      if user_roles.where( resource_type: nil ).present?
+#        all
+    
+#      # Case 3: with access to *all* records of this class (eg, courses), irrespective of id
+#      elsif user_roles.where( resource_type: self.name, resource_id: nil ).present?
+#        all 
+
+#      # Case 4: with access to a particular course (inner join)
+#      else
+#        joins( :user_roles ).merge user_roles
+#      end
+#   end
+# end

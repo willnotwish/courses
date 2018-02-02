@@ -1,4 +1,4 @@
-class CreateCoursesCourseMemberships < ActiveRecord::Migration[5.1]
+class CreateCoursesCourseMemberships < ActiveRecord::Migration[5.0]
   def change
     create_table :courses_course_memberships do |t|
       t.string :aasm_state

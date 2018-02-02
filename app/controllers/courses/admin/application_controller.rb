@@ -1,21 +1,31 @@
 
+require_dependency 'courses/application_controller'
+
 module Courses
 	module Admin
-  	class ApplicationController < ::ApplicationController
-	    before_action :authenticate_user!
+  	class ApplicationController < ApplicationController
 
-  		include Pundit
-			rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  		# decorate_user_with 'Courses::Admin::UserDecorator'
 
-	  	include DecoratorHelpers
+	  #   before_action :authenticate_user!
 
-	    respond_to :html, :json
+  	# 	include Pundit
+			# rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+	  # 	include DecoratorHelpers
+
+	  #   respond_to :html, :json
 	  
-	  private
+	  # private
 
-	  	def user_not_authorized
-	  		flash[:alert] = "You are not authorized to perform this action."
-		    redirect_to(request.referrer || main_app.root_path)	  		
+	  # 	def user_not_authorized
+	  # 		flash[:alert] = "You are not authorized to perform this action."
+		 #    redirect_to(request.referrer || main_app.root_path)	  		
+	  # 	end
+	  protected
+
+	  	def decorate_current_user( user )
+	  		decorate user, class_name: 'Courses::Admin::UserDecorator'
 	  	end
 	  end
   end

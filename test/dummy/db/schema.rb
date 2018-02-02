@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180126112117) do
+ActiveRecord::Schema.define(version: 20180201182943) do
 
-  create_table "courses_course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "courses_course_memberships", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "aasm_state"
-    t.bigint "course_id"
-    t.bigint "member_id"
+    t.integer "course_id"
+    t.integer "member_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "payment_id"
+    t.integer "payment_id"
     t.index ["course_id"], name: "index_courses_course_memberships_on_course_id"
     t.index ["member_id"], name: "index_courses_course_memberships_on_member_id"
     t.index ["payment_id"], name: "index_courses_course_memberships_on_payment_id"
   end
 
-  create_table "courses_courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "courses_courses", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.datetime "starts_at"
     t.integer "duration"
@@ -33,16 +33,22 @@ ActiveRecord::Schema.define(version: 20180126112117) do
     t.integer "capacity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "product_id"
+    t.integer "product_id"
     t.text "description"
     t.timestamp "enrolment_closes_at"
+    t.string "aasm_state"
+    t.timestamp "published_at"
+    t.integer "user_id"
+    t.index ["aasm_state"], name: "index_courses_courses_on_aasm_state"
     t.index ["product_id"], name: "index_courses_courses_on_product_id"
+    t.index ["published_at"], name: "index_courses_courses_on_published_at"
+    t.index ["user_id"], name: "index_courses_courses_on_user_id"
   end
 
-  create_table "courses_user_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "role_id"
-    t.bigint "user_id"
-    t.bigint "course_id"
+  create_table "courses_user_roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "role_id"
+    t.integer "user_id"
+    t.integer "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_courses_user_roles_on_course_id"
@@ -50,13 +56,13 @@ ActiveRecord::Schema.define(version: 20180126112117) do
     t.index ["user_id"], name: "index_courses_user_roles_on_user_id"
   end
 
-  create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "payments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "paypal_payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "paypal_payments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "token"
     t.string "payer_id"
     t.integer "amount"
@@ -70,7 +76,7 @@ ActiveRecord::Schema.define(version: 20180126112117) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "permissions", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
@@ -78,7 +84,7 @@ ActiveRecord::Schema.define(version: 20180126112117) do
     t.index ["name"], name: "index_permissions_on_name"
   end
 
-  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "products", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.text "description"
     t.integer "price"
@@ -86,11 +92,11 @@ ActiveRecord::Schema.define(version: 20180126112117) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "role_permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "role_id"
-    t.bigint "permission_id"
+  create_table "role_permissions", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "role_id"
+    t.integer "permission_id"
     t.string "resource_type"
-    t.bigint "resource_id"
+    t.integer "resource_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
@@ -98,7 +104,7 @@ ActiveRecord::Schema.define(version: 20180126112117) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
-  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
@@ -106,7 +112,7 @@ ActiveRecord::Schema.define(version: 20180126112117) do
     t.index ["name"], name: "index_roles_on_name"
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "auth0_user_id"
     t.datetime "created_at", null: false
@@ -114,6 +120,7 @@ ActiveRecord::Schema.define(version: 20180126112117) do
   end
 
   add_foreign_key "courses_course_memberships", "courses_courses", column: "course_id"
+  add_foreign_key "courses_courses", "users"
   add_foreign_key "courses_user_roles", "courses_courses", column: "course_id"
   add_foreign_key "courses_user_roles", "roles"
   add_foreign_key "courses_user_roles", "users"

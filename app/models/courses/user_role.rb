@@ -10,13 +10,18 @@ module Courses
     	def for_user( user )
     		where( user: user )
     	end
+    	alias_method :of_user, :for_user
 
     	def with_permission_to( action )
     		where( role: [nil, Role.with_permission_to( action ).ids] )
     	end
 
     	def for_course( course )
-    		where( course: [course, nil] )
+    		if course.nil?
+    			where( course: nil )
+    		else
+	    		where( course: [course, nil] )
+	    	end
     	end
     end
   end

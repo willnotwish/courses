@@ -1,20 +1,24 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+
 require 'spec_helper'
+
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../test/dummy/config/environment', __FILE__)
-# Prevent database truncation if the environment is production
+
 abort("The Rails environment is running in production mode!") if Rails.env.production?
+
 require 'rspec/rails'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require 'rspec/collection_matchers'
 require 'shoulda-matchers'
+require 'pundit/matchers'
 
 # Factory bot requires: in a specific place
 require 'factory_bot_rails'
 
-%w( users payments products ).each {|fac| require File.expand_path("../../test/dummy/spec/factories/#{fac}", __FILE__) }
-
+%w( users payments products roles permissions ).each { |fac| require File.expand_path("../../test/dummy/spec/factories/#{fac}", __FILE__) }
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -73,17 +77,7 @@ end
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
-    # Choose a test framework:
     with.test_framework :rspec
-    # with.test_framework :minitest
-    # with.test_framework :minitest_4
-    # with.test_framework :test_unit
-
-    # Choose a library:
-    # with.library :active_record
-    # with.library :active_model
-    # with.library :action_controller
-    # Or, choose all of the above:
     with.library :rails
   end
 end
