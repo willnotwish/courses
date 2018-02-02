@@ -24,61 +24,75 @@ module Courses
     it{ is_expected.to have_db_column(:enrolment_closes_at)}
     it{ is_expected.to have_db_column(:aasm_state)}
     it{ is_expected.to have_db_column(:published_at)}
+    it{ is_expected.to have_db_column(:owner_id)}
 
     it{ is_expected.to have_many(:course_memberships) }
     it{ is_expected.to have_many(:members) }
     it{ is_expected.to have_many(:user_roles) }
     it{ is_expected.to belong_to(:product) }
+    it{ is_expected.to belong_to(:owner) }
 
-    it{ is_expected.to be_hidden }
+    it{ is_expected.to be_draft }
     it{ is_expected.not_to be_published }
+    it{ is_expected.not_to be_restricted }
 
-    it "#save returns true" do
-    	expect(subject.save).to eq( true )
-    end
+    it{ is_expected.to be_invalid }
 
-    context 'when saved' do
+    context 'when an owner is assigned' do
+    	let( :user ) { FactoryBot.create :user }
     	before do
-    	  subject.save
+    	  subject.owner = user
+    	  expect(subject.owner).to be
     	end
 
-	    it{ is_expected.to be_hidden }
-	    it{ is_expected.not_to be_published }
-
-	    context 'when published' do
+    	it{ is_expected.to be_valid }
+	    it "#save returns truthy" do
+	    	expect(subject.save).to be
+	    end
+    	
+	    context 'when saved' do
 	    	before do
-	    	  subject.publish!
+	    	  subject.save
 	    	end
 
-		    it{ is_expected.to be_published }
-		    it{ is_expected.not_to be_hidden }
+		    it{ is_expected.to be_draft }
+		    it{ is_expected.not_to be_published }
 
-		    it "its aasm current state is :published" do
-		    	expect(subject.aasm.current_state).to eq(:published)
-		    end
-
-		    it "its aasm human state is Published" do
-		    	expect(subject.aasm.human_state).to eq('Published')
-		    end
-
-		    it "cannot be published" do
-		    	expect(subject.may_publish?).not_to be
-		    end
-
-		    it "may be hidden" do
-		    	expect(subject.may_hide?).to be
-		    end
-
-		    context 'when hidden' do
+		    context 'when published' do
 		    	before do
-		    	  subject.hide!
+		    	  subject.publish!
 		    	end
 
-			    it{ is_expected.to be_hidden }
-			    it{ is_expected.not_to be_published }
+			    it{ is_expected.to be_published }
+			    it{ is_expected.not_to be_restricted }
 
-			    it "published_at timestamp is nil" do
-			    	expect(subject.published_at).not_to be
+			    it "its aasm current state is :published" do
+			    	expect(subject.aasm.current_state).to eq(:published)
+			    end
+
+			    it "its aasm human state is Published" do
+			    	expect(subject.aasm.human_state).to eq('Published')
+			    end
+
+			    it "cannot be published" do
+			    	expect(subject.may_publish?).not_to be
+			    end
+
+			    it "may be restricted" do
+			    	expect(subject.may_restrict?).to be
+			    end
+
+			    context 'when restricted' do
+			    	before do
+			    	  subject.restrict!
+			    	end
+
+				    it{ is_expected.to be_restricted }
+				    it{ is_expected.not_to be_published }
+
+				    it "published_at timestamp is nil" do
+				    	expect(subject.published_at).not_to be
+				    end
 			    end
 		    end
 	    end

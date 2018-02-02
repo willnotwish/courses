@@ -38,11 +38,11 @@ ActiveRecord::Schema.define(version: 20180201182943) do
     t.timestamp "enrolment_closes_at"
     t.string "aasm_state"
     t.timestamp "published_at"
-    t.integer "user_id"
+    t.integer "owner_id"
     t.index ["aasm_state"], name: "index_courses_courses_on_aasm_state"
+    t.index ["owner_id"], name: "index_courses_courses_on_owner_id"
     t.index ["product_id"], name: "index_courses_courses_on_product_id"
     t.index ["published_at"], name: "index_courses_courses_on_published_at"
-    t.index ["user_id"], name: "index_courses_courses_on_user_id"
   end
 
   create_table "courses_user_roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -120,7 +120,6 @@ ActiveRecord::Schema.define(version: 20180201182943) do
   end
 
   add_foreign_key "courses_course_memberships", "courses_courses", column: "course_id"
-  add_foreign_key "courses_courses", "users"
   add_foreign_key "courses_user_roles", "courses_courses", column: "course_id"
   add_foreign_key "courses_user_roles", "roles"
   add_foreign_key "courses_user_roles", "users"

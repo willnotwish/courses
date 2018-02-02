@@ -30,21 +30,23 @@ module Courses
   	has_many :provisional_members, through: :provisional_memberships, source: :member
 
   	belongs_to :product, required: false
+    belongs_to :owner, class_name: Courses.course_owner_class
 
     has_many :user_roles
 
     include AASM
     aasm do 
+      # Note that no user roles are checked here. Assume they have been checked previsouly in the controller.
       state :draft, initial: true
-      state :unpublished, enter: ->(course) { course.published_at = nil }
-      state :published, enter: ->(course) { course.published_at = Time.now }
+      state :restricted, enter: ->(record) { record.published_at = nil }
+      state :published, enter: ->(record) { record.published_at = Time.now }
 
       event :publish do
-        transitions from: [:draft, :unpublished], to: :published
+        transitions from: [:draft, :restricted], to: :published
       end
 
-      event :unpublish do
-        transitions from: :published, to: :unpublished
+      event :restrict do
+        transitions from: [:draft, :published], to: :restricted
       end
     end
 
@@ -56,10 +58,13 @@ module Courses
       def with_confirmed_membership_for( member )
         joins( :confirmed_memberships ).merge( CourseMembership.where( member: member ) )
       end
+
+      def owned_by( owner )
+        where( owner: owner )
+      end
     end
   end
 end
-
 
 # class << self
 #   def accessible_to( user, action = 'show' )

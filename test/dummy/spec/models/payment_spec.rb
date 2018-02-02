@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: payments
+#
+#  id         :integer          not null, primary key
+#  amount     :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'rails_helper'
 
 RSpec.describe Payment, type: :model do
