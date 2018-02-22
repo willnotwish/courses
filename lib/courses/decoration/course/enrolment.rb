@@ -5,23 +5,31 @@ module Courses
 		module Course
 			module Enrolment
 
-				# There is always space if the capacity is not specified
-				def has_space?
-					return true unless capacity.present?
-					member_count < capacity
+				def has_space?( count = 1 )
+					return true unless capacity.present?  # there is always space if the capacity is not specified
+					
+					n = include_provisional_in_capacity? ? (confirmed_members.count + provisional_members.count) : confirmed_members.count
+					capacity >= count + n
 				end
 
 				def full?
 					!has_space?
 				end
 
+				# def total_member_count
+				# 	confirmed_member_count + provisional_members.count
+				# end
+
 				def confirmed_member_count
 					confirmed_members.count	
 				end
-				alias_method :member_count, :confirmed_member_count
 
 				def provisional_member_count
 					provisional_members.count
+				end
+
+				def cancelled_member_count
+					cancelled_members.count
 				end
 
 				def empty?
@@ -38,7 +46,8 @@ module Courses
 
 				# It does not make sense to call this unless capacity is set. Callers should check beforehand
 				def places_available
-					capacity - member_count
+					n = include_provisional_in_capacity? ? (confirmed_members.count + provisional_members.count) : confirmed_members.count
+					capacity - n
 				end
 			end
 		end

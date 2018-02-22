@@ -31,7 +31,7 @@ module Courses
 
     context 'when a course and a member are set' do
       let( :member ) { FactoryBot.create :user }
-      let( :course ) { FactoryBot.create :courses_course }
+      let( :course ) { FactoryBot.create :courses_course, owner: FactoryBot.create(:user) }
 
       before do
         subject.course = course

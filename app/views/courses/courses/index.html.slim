@@ -1,9 +1,40 @@
+/ nav.breadcrumbs
+/   = link_to 'Home', [:admin, :root]
+/   = link_to 'Courses', :courses, class: 'current'  
+
+
+/ .index
+/   .index__header
+/     h2 Courses
+/   .index__results
+/     ul
+/       - @courses.each do |course|
+/         li
+/           .course.course--list
+/             == render partial: 'list', locals: { course: decorate(course) }
+
+
+
+
 .index
+
   .index__header
     h2 Courses
-  .index__results
+
+  .index__actions
+    ul
+      li = link_to( 'New course', [:new, :course] )
+      li = link_to( 'Download CSV', format: :csv )
+
+  .index__filter
+    .alert-box.warning Filter/search coming soon
+
+  .index__view-type
+    = view_type_selector
+
+  .index__results class="index__results--#{current_view_type}"
     ul
       - @courses.each do |course|
         li
-          .course.course--list
-            == render partial: 'list', locals: { course: decorate(course) }
+          == render partial: current_view_type, locals: { course: decorate(course) }
+

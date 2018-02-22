@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 module Courses
-  RSpec.describe Courses::Admin::CreateCourseOperation2, type: :model do
+  RSpec.describe Courses::Admin::CreateCourseOperation, type: :model do
     it{ is_expected.to be }
     it{ is_expected.to validate_presence_of(:name) }
     it{ is_expected.to validate_presence_of(:starts_at) }
     it{ is_expected.to validate_numericality_of(:duration_in_weeks) }
 
     it{ is_expected.to be_invalid }
-    it ".save returns false" do
-    	expect(subject.save).to eq(false)
+    it ".save fails" do
+    	expect(subject.save).not_to be
     end
 
     context 'when assigned a name and starts_at timestamp' do

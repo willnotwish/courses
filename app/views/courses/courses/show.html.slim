@@ -1,11 +1,32 @@
+
 - decorate @course do |course|
 
   h3 = course.name
-  hr
 
-  h5.subheader Starts on: #{l course.starts_on, format: :long}
+  - if course.owner == current_user
+    p You own this course. It's all yours...
+    - if course.draft?
+      p It's currently in the <b>draft</b> state, which means no-one else can see it, apart from administrators. 
+      p When you're happy with it, #{link_to 'ask for it to be published', nil} so people can join.
+    - elsif course.published?
+      p This course has been published, which means others can see it. It was published on #{l course.published_on }
+    - elsif course.restricted?
+      p This course has been restricted, which means others cannot see it unless they are already enrolled.
+
+  .action-bar
+  
+    - if course.may_be_updated?
+      = link_to [:new, @course, :update] do
+        i.fa.fa-edit
+        |edit
+
+    - if course.may_be_deleted?
+      = link_to @course, method: :delete do
+        i.fa.fa-trash
+        |delete
 
   hr
+  h4.subheader Starts on #{l course.starts_on, format: :long} at #{l course.starts_at, format: :time}
 
   p = course.description
 
@@ -26,17 +47,28 @@
       = fa_icon 'long-arrow-right'
 
   - elsif course.membership_status( current_user ) == :enrolled_provisionally
+
+    hr
+
     .alert-box.alert 
-      = fa_icon 'exclamation-triangle'
+      i.fa.fa-exclamation-triangle
       |&nbsp;Please note. Your membership of this course is <em>provisional</em>. You cannot attend until payment is received.
 
-    p = link_to [:new, course.provisional_membership( current_user ), :paypal_token] do
-      'Pay now
-      = fa_icon 'paypal'
+    - course.provisional_membership( current_user ).tap do |cm|
+
+      p = link_to [:new, cm, :paypal_token] do
+        'Pay now
+        i.fab.fa-paypal
+
+      p 
+        'If you've changed your mind and you are no longer interested in this course, you can 
+        = link_to [:new, cm, :deletion]
+          'cancel your membership
+          i.fa.fa-trash
 
   - elsif !course.open_for_enrolment?
     p.alert-box.warning 
-      = fa_icon 'exclamation-triangle'
+      i.fa.fa-exclamation-triangle
       |&nbsp;You cannot enrol on this course right now. 
     - if course.before_enrolment_opens?
       |Enrolment doesn't open until #{l course.enrolment_opens_at}. Please come back then. Thanks for your interest.
@@ -46,12 +78,12 @@
   - elsif course.full?
     p.alert.alert--warning We are sorry, but this course is full. Thanks for your interest.
 
+  - elsif course.space_limited? 
+    p 
+      'There are #{course.places_available} places available.
+      = link_to 'Enrol now', [:new, course, :enrolment]
   - else
-    - if course.space_limited? 
-      p There are #{course.places_available} places available.
-      p = link_to [:new, course, :enrolment] do
-        'Enrol now
-        = fa_icon 'long-arrow-right'
+    p = link_to 'Enrol now', [:new, course, :enrolment]
 
 
    

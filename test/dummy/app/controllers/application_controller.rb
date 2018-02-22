@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def current_user
-  	User.last
+  	@current_user
+  end
+
+  def authenticate_user!
+  	@current_user = User.first
   end
 end

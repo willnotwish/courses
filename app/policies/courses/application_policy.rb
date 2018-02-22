@@ -1,3 +1,5 @@
+require 'pundit'
+
 module Courses
   class ApplicationPolicy
     attr_reader :user, :record

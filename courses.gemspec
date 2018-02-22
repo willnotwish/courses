@@ -33,7 +33,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda-matchers'
   s.add_development_dependency 'byebug'
   s.add_development_dependency 'factory_bot_rails'
-  s.add_development_dependency 'annotate'
   s.add_development_dependency 'activemerchant'
   s.add_development_dependency 'pundit'
   s.add_development_dependency 'pundit-matchers'

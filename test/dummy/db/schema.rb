@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180201182943) do
+ActiveRecord::Schema.define(version: 20180212190136) do
 
   create_table "courses_course_memberships", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "aasm_state"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 20180201182943) do
     t.string "aasm_state"
     t.timestamp "published_at"
     t.integer "owner_id"
+    t.text "terms_and_conditions"
+    t.boolean "include_provisional_in_capacity"
     t.index ["aasm_state"], name: "index_courses_courses_on_aasm_state"
     t.index ["owner_id"], name: "index_courses_courses_on_owner_id"
     t.index ["product_id"], name: "index_courses_courses_on_product_id"
@@ -95,12 +97,9 @@ ActiveRecord::Schema.define(version: 20180201182943) do
   create_table "role_permissions", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "role_id"
     t.integer "permission_id"
-    t.string "resource_type"
-    t.integer "resource_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
-    t.index ["resource_type", "resource_id"], name: "index_role_permissions_on_resource_type_and_resource_id"
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 

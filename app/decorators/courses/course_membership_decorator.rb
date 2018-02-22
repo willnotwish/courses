@@ -4,8 +4,8 @@ module Courses
 	class CourseMembershipDecorator < ApplicationDecorator
 
 		delegate :course, :member, :payment, :aasm_state, to: :object
-		delegate :product, to: :course
-		delegate :price, to: :product
+		delegate :product, to: :course, allow_nil: true
+		delegate :price, to: :product, allow_nil: true
 
 		# In the future maybe I could do something like this:
 		# decorate_with :pricing, :membership_status

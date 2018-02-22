@@ -15,7 +15,12 @@ module Courses
 		         :confirmed_members,
 		         :provisional_members,
 		         :product, 
-		         :description, 
+		         :description,
+		         :owner,
+		         :draft?,
+		         :published?,
+		         :restricted?,
+		         :include_provisional_in_capacity?,
 			to: :object
 
 		include Decoration::Course::Timing
@@ -34,6 +39,10 @@ module Courses
 
 		def after_enrolment_closed?
 			enrolment_closes_at.present? && Time.now > enrolment_closes_at
+		end
+
+		def human_state
+			object.aasm.human_state
 		end
 
 		# def membership_scope( user )
@@ -58,6 +67,10 @@ module Courses
 
 		def confirmed_membership( user )
 			membership_scope.for_user( user ).confirmed.first
+		end
+
+		def may_delete?
+			policy( object ).delete?
 		end
 	end
 end

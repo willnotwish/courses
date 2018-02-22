@@ -1,15 +1,3 @@
-# == Schema Information
-#
-# Table name: courses_course_memberships
-#
-#  id         :integer          not null, primary key
-#  aasm_state :string(255)
-#  course_id  :integer
-#  member_id  :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  payment_id :integer
-#
 
 require 'aasm'
 
@@ -40,7 +28,7 @@ module Courses
       end
       alias_method :for_members, :for_member
 
-      def for_course
+      def for_course( course )
         where( course: course )
       end
       alias_method :for_courses, :for_course

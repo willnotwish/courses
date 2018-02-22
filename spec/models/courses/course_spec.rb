@@ -1,30 +1,16 @@
-# == Schema Information
-#
-# Table name: courses_courses
-#
-#  id                      :integer          not null, primary key
-#  name                    :string(255)
-#  starts_at               :datetime
-#  duration                :integer
-#  guest_period_expires_at :datetime
-#  enrolment_opens_at      :datetime
-#  capacity                :integer
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  product_id              :integer
-#
-
 require 'rails_helper'
 
 module Courses
   RSpec.describe Course, type: :model do
     it{ is_expected.to be }
 
-    it{ is_expected.to have_db_column(:enrolment_opens_at)}
-    it{ is_expected.to have_db_column(:enrolment_closes_at)}
-    it{ is_expected.to have_db_column(:aasm_state)}
-    it{ is_expected.to have_db_column(:published_at)}
-    it{ is_expected.to have_db_column(:owner_id)}
+    it{ is_expected.to have_db_column(:enrolment_opens_at) }
+    it{ is_expected.to have_db_column(:enrolment_closes_at) }
+    it{ is_expected.to have_db_column(:aasm_state) }
+    it{ is_expected.to have_db_column(:published_at) }
+    it{ is_expected.to have_db_column(:owner_id) }
+    it{ is_expected.to have_db_column(:terms_and_conditions) }
+    it{ is_expected.to have_db_column(:include_provisional_in_capacity) }
 
     it{ is_expected.to have_many(:course_memberships) }
     it{ is_expected.to have_many(:members) }
@@ -37,6 +23,15 @@ module Courses
     it{ is_expected.not_to be_restricted }
 
     it{ is_expected.to be_invalid }
+
+    it "has no terms and conditions" do
+    	expect( subject.terms_and_conditions ).not_to be
+    end
+
+    it "has terms and conditions when they are assigned" do
+    	subject.terms_and_conditions = "Small print"
+    	expect(subject.terms_and_conditions).to be_present
+    end
 
     context 'when an owner is assigned' do
     	let( :user ) { FactoryBot.create :user }

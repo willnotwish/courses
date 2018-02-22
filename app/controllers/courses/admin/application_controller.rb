@@ -22,11 +22,11 @@ module Courses
 	  # 		flash[:alert] = "You are not authorized to perform this action."
 		 #    redirect_to(request.referrer || main_app.root_path)	  		
 	  # 	end
-	  protected
+	  # protected
 
-	  	def decorate_current_user( user )
-	  		decorate user, class_name: 'Courses::Admin::UserDecorator'
-	  	end
+	  # 	def decorate_current_user( user )
+	  # 		decorate user, class_name: 'Courses::Admin::UserDecorator'
+	  # 	end
 	  end
   end
 end

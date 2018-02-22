@@ -1,0 +1,23 @@
+/ show.html.slim
+
+h2 Courses dashboard
+
+p You are logged in as #{current_user.name}
+
+p Courses scope: #{@dashboard.courses.to_sql}
+
+hr
+
+- courses = @dashboard.courses
+- if courses.present?
+	- courses.each do |record|
+		- decorate( record, class_name: 'Courses::CourseDecorator' ) do |course|
+			= link_to course do
+				.row
+					.large-4.columns = course.name
+					.large-4.columns = course.starts_on
+- else
+	.alert-box.info 
+		= fa_icon 'exclamation-circle'
+		|&nbsp; You do not have access to any courses here. If you think this is wrong, request access from an admin, or ask them to check.
+

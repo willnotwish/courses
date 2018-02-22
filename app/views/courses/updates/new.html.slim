@@ -1,0 +1,12 @@
+/ new.html.slim
+
+h1 Update course
+
+p Use this form to make changes.
+
+p Publication status: <b>#{@course.aasm.human_state}</b>
+
+= render partial: 'form', object: @update, as: :update
+
+hr
+= link_to 'Back to dashboard', root_path

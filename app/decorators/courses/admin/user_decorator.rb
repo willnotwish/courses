@@ -3,8 +3,8 @@ module Courses
 
   	delegate :name, to: :object
 
-  	def user_roles( course = nil )
-  		Courses::UserRole.for_user( object ).for_course( course )
+  	def user_roles
+  		Courses::UserRole.for_user( object )
   	end
 
   	def roles( course = nil )
@@ -14,7 +14,7 @@ module Courses
 
   		j = t1.join( t2, Arel::Nodes::InnerJoin ).on t1[:id].eq(t2[:role_id])
 
-  		Role.joins( j.join_sources ).merge user_roles( course )
+  		Role.joins( j.join_sources ).merge user_roles.for_course( course )
   	end
 
   	def role_permissions( course = nil )
@@ -29,33 +29,42 @@ module Courses
   		permissions(course).merge( Permission.to( action_name ) ).present?
   	end
 
-  	def able_to_publish?( course = nil )
-  		has_permission_to? :publish, course
-  	end
+  	# def able_to_publish?( course = nil )
+  	# 	has_permission_to? :publish, course
+  	# end
 
-  	def able_to_unpublish?( course = nil )
-  		has_permission_to? :unpublish, course
-  	end
+  	# def able_to_restrict?( course = nil )
+  	# 	has_permission_to? :restrict, course
+  	# end
 
-  	def able_to_show?( course = nil )
-  		has_permission_to? :show, course
-  	end
+  	# def able_to_show?( course = nil )
+  	# 	has_permission_to? :show, course
+  	# end
 
-  	def courses_permitted_to( action_name )
-  		ur_scope = Courses::UserRole.with_permission_to( action_name ).for_user( object )
-  		if ur_scope.where( course: nil ).present?
-  			Courses::Course.all
-  		else	
-	  		Courses::Course.joins( :user_roles ).merge ur_scope
-	  	end
-  	end
+    # def able_to_show_all_courses?
+    #   able_to_show?( nil )
+    # end
 
-  	def accessible_courses
-  		courses_permitted_to :show
-  	end
-
-  	def courses_permitted_to_update
-  		courses_permitted_to :update
-  	end
+    # def able_to_show_all_courses?
+    #   able_to_show?( nil )
+    # end
   end
 end
+
+
+    # def courses_permitted_to( action_name )
+    #   ur_scope = Courses::UserRole.with_permission_to( action_name ).for_user( object )
+    #   if ur_scope.where( course: nil ).present?
+    #     Courses::Course.all
+    #   else  
+    #     Courses::Course.joins( :user_roles ).merge ur_scope
+    #   end
+    # end
+
+    # def accessible_courses
+    #   courses_permitted_to :show
+    # end
+
+    # def courses_permitted_to_update
+    #   courses_permitted_to :update
+    # end
