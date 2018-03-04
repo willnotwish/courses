@@ -1,3 +1,4 @@
+require 'pundit'
 
 module Courses
 	module Admin
