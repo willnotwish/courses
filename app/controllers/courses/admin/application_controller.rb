@@ -1,3 +1,4 @@
+require 'pundit'
 
 require_dependency 'courses/application_controller'
 

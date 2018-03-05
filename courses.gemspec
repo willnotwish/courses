@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "font-awesome-rails"
   s.add_dependency "sass-rails"
   s.add_dependency "aasm"
+  s.add_dependency "pundit"
 
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'slim-rails'
@@ -34,6 +35,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'byebug'
   s.add_development_dependency 'factory_bot_rails'
   s.add_development_dependency 'activemerchant'
-  s.add_development_dependency 'pundit'
   s.add_development_dependency 'pundit-matchers'
 end
