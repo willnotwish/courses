@@ -1,4 +1,4 @@
-class CreateCoursesCourses < ActiveRecord::Migration[5.0]
+class CreateCoursesCourses < ActiveRecord::Migration[5.1]
   def change
     create_table :courses_courses do |t|
       t.string :name

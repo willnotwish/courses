@@ -1,4 +1,4 @@
-class CreateCoursesUserRoles < ActiveRecord::Migration[5.0]
+class CreateCoursesUserRoles < ActiveRecord::Migration[5.1]
   def change
     create_table :courses_user_roles do |t|
       t.references :role, foreign_key: true

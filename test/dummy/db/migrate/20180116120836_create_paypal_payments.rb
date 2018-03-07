@@ -1,4 +1,4 @@
-class CreatePaypalPayments < ActiveRecord::Migration[5.0]
+class CreatePaypalPayments < ActiveRecord::Migration[5.1]
   def change
     create_table :paypal_payments do |t|
       t.string :token

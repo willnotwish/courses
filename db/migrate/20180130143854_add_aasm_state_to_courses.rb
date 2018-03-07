@@ -1,4 +1,4 @@
-class AddAasmStateToCourses < ActiveRecord::Migration[5.0]
+class AddAasmStateToCourses < ActiveRecord::Migration[5.1]
   def change
     add_column :courses_courses, :aasm_state, :string
     add_column :courses_courses, :published_at, :timestamp
