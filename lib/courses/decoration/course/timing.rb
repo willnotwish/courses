@@ -17,6 +17,14 @@ module Courses
 				end	
 				alias_method :started_on, :starts_on
 
+				def ends_on
+					(starts_at + duration).to_date
+				end
+
+				def ends_on_dotiw
+					view_context.time_ago_in_words( ends_on )
+				end
+
 				def enrolment_opens_on
 					enrolment_opens_at.to_date		
 				end

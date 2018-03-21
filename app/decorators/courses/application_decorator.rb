@@ -1,39 +1,45 @@
 # application_decorator.rb
 
 module Courses
-	class ApplicationDecorator
-		include ActiveModel::Model
 
-		attr_accessor :object, :view_context
+	# NEW Now inherits from main app's corresponding class
+	class ApplicationDecorator < ::ApplicationDecorator
+		# include ActiveModel::Model
 
-		delegate :id, to: :object, allow_nil: true
+		# attr_accessor :object, :view_context
 
-		delegate :to_model, to: :object   # allows url generation to work as expected
+		# delegate :id, to: :object, allow_nil: true
 
-		# Delegate common view helpers to the view context
-		delegate :content_tag, :link_to, :markdown, :image_tag, :current_user, :decorate, :number_to_currency, :l, :policy, to: :view_context
+		# delegate :to_model, to: :object   # allows url generation to work as expected
 
-		def format_currency( pence, unit = '£' )
-			number_to_currency( pence/100, unit: unit )
-		end
+		# # Delegate common view helpers to the view context
+		# delegate :render, :content_tag, :link_to, :markdown, :image_tag, :current_user, :decorate, :number_to_currency, :l, :policy, to: :view_context
 
-		# include PunditPolicies
-		def may_update?
-			policy( object ).update?
-		end
-		alias_method :may_be_updated?, :may_update?
+		# def format_currency( pence, unit = '£' )
+		# 	number_to_currency( pence/100, unit: unit )
+		# end
 
-		def may_show?
-			policy( object ).show?
-		end
-		alias_method :may_view?, :may_show?
-		alias_method :may_be_shown?, :may_show?
+		# def status_label
+		# 	render partial: 'status_label', object: object.aasm, as: :aasm
+		# end
 
-		def may_delete?
-			policy( object ).delete?
-		end
-		alias_method :may_be_deleted?, :may_delete?
+		# # include PunditPolicies
+		# def may_update?
+		# 	policy( object ).update?
+		# end
+		# alias_method :may_be_updated?, :may_update?
 
-		cattr_accessor( :logger ) { Rails.logger }
+		# def may_show?
+		# 	policy( object ).show?
+		# end
+		# alias_method :may_view?, :may_show?
+		# alias_method :may_be_shown?, :may_show?
+
+		# def may_delete?
+		# 	policy( object ).delete?
+		# end
+		# alias_method :may_be_deleted?, :may_delete?
+
+		# cattr_accessor( :logger ) { Rails.logger }
 	end
 end

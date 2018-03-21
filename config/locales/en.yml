@@ -21,3 +21,7 @@ en:
             destroy:
               notice: "Course was deleted successfully"
               alert: "Course could not be deleted. Maybe it wasn't empty. Check its provisional memberships"
+  courses:
+    status:
+      enrolled: 'Enrolled'
+      open_for_enrolment: 'Enrolment now open'

@@ -1,23 +1,25 @@
 / show.html.slim
 
-h2 Courses dashboard
+- page_subtitle 'Dashboard'
 
-p You are logged in as #{current_user.name}
+- vt = params[:vt] || 'card'
 
-p Courses scope: #{@dashboard.courses.to_sql}
+header
+	h2 Dashboard
 
-hr
+	.c-nav-vt
+		= link_to 'List', {vt: :listing}, class: 'c-nav-vt__item'
+		= link_to 'Cards', {vt: :card}, class: 'c-nav-vt__item'
 
-- courses = @dashboard.courses
-- if courses.present?
-	- courses.each do |record|
-		- decorate( record, class_name: 'Courses::CourseDecorator' ) do |course|
-			= link_to course do
-				.row
-					.large-4.columns = course.name
-					.large-4.columns = course.starts_on
-- else
-	.alert-box.info 
-		= fa_icon 'exclamation-circle'
-		|&nbsp; You do not have access to any courses here. If you think this is wrong, request access from an admin, or ask them to check.
+main
+	- @dashboard.courses.tap do |courses|
+		- if courses.present?
+			- decorate courses do |course|
+				= link_to course do
+					= render course, block_name: "c-course-#{vt.to_s.dasherize}"
+					/ = render partial: 'course', object: course, locals: { block_name: "c-course-#{vt.to_s.dasherize}" }
+		- else
+			.alert-box.info 
+				= fa_icon 'exclamation-circle'
+				|&nbsp; You do not have access to any courses here. If you think this is wrong, ask an admin to check.
 

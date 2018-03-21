@@ -1,0 +1,10 @@
+/ _course_membership.html.slim
+
+/ = link_to course_membership.member_name, course_membership
+
+= link_to course_membership, class: 'membership-listing__membership' do
+  .membership-listing__name
+    = course_membership.member_name
+  .membership-listing__date
+    = course_membership.paid_on
+

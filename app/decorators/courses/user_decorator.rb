@@ -1,3 +1,5 @@
+require_dependency "courses/application_decorator"   # needed sometimes (I'm not sure when). Best to include it always.
+
 module Courses
 
 	# Note. Don't put policy scopes in here. This is a decorator. Put them in the policy instead.

@@ -1,0 +1,10 @@
+/ _course.html.slim
+
+- b_name = local_assigns[:block_name] || 'default'
+
+= bem_block b_name, html: { title: "Click to view details of #{course.name}" } do |b|
+	= b.element 'thumbnail', course.thumbnail
+	= b.element 'name', course.name
+	= b.element 'date', "starts #{l course.starts_on}"
+	= b.element 'state', course.human_state, published: course.published?, restricted: course.restricted? do
+	= b.element 'description', course.description

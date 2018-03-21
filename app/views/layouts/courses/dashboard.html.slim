@@ -1,0 +1,32 @@
+/ dashboard.html.slim
+
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title = page_title
+    
+    = stylesheet_link_tag    "courses/application", media: "all"
+    = javascript_include_tag "courses/application"
+    = csrf_meta_tags
+  body
+    / = bem_b 'courses-layout' do
+    /   = bem_e 'header' do
+    /     h3 Courses Dashboard
+    /   = bem_e 'notice' do
+    /     = flash.notice
+    /   = bem_e 'alert' do
+    /     = flash.notice
+    /   = bem_e 'content' do
+    /     = yield
+
+    .courses-layout
+      .courses-layout__header
+        h2 Courses
+
+      .courses-layout__notice = flash.notice
+      .courses-layout__alert = flash.alert
+      .courses-layout__content = yield
+      .courses-layout__footer
+        |Courses dashboard footer here
+ 

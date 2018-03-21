@@ -1,0 +1,103 @@
+@import 'normalize';
+@import 'neat';
+
+
+$ngrid-mobile-first: (
+	columns: 1,
+	gutter: 1rem
+);
+
+
+.courses-layout {
+	border: 1px dotted red;
+	// max-width: 1200px;
+	margin: 0 auto;
+
+	&__header {
+		background: lightgray;
+		margin-bottom: 1rem;
+	}
+
+	&__footer {
+		background: lightgray;
+		margin-top: 1rem;
+	}
+}
+
+.c-nav-vt {
+	// border: 1px solid black;
+	margin-bottom: 1rem;
+
+	&__item {
+		display: inline-block;
+		margin-right: 2rem;
+	}
+}
+
+.dlist {
+	&__item {
+		display: block;
+		@include grid-container;
+
+
+	}
+}
+
+.course-name {
+	font-weight: 800;
+	font-style: italic;
+}
+
+$neat-grid: (
+  columns: 1,
+  gutter: 1rem,
+);
+
+$wide-screen-grid: (
+	columns: 12,
+	gutter: 1rem,
+  media: "(min-width: 1200px)",
+);
+
+@mixin grid-setup( $mobile, $wide ) {
+	@include grid-column( $mobile );
+	@include grid-media( $wide-screen-grid ) {
+		@include grid-column( $wide );
+	}
+}
+
+@mixin not-for-wide {
+	@include grid-media( $wide-screen-grid ) {
+		display: none;
+	}
+}
+
+.c-course-listing {
+	@include grid-container;
+	@include grid-visual( lighten(blue, 40%) );
+
+	margin-bottom: 1rem;
+
+	@include grid-media( $wide-screen-grid ) {
+		@include grid-container( $wide-screen-grid );
+		@include grid-visual( lighten(red, 40%), $wide-screen-grid );
+	}
+
+	&__thumbnail {
+		@include grid-setup( 1, 1 );
+		// @include not-for-wide;
+	}
+
+	&__state {
+		@include grid-setup( 1, 1 );
+	}
+
+	&__name, 
+	&__date {
+		@include grid-setup( 1, 2 );
+	}
+
+	&__description {
+		@include grid-setup( 1, 6 );
+	}
+}

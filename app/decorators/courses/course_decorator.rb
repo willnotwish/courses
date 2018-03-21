@@ -1,5 +1,7 @@
 # course_decorator.rb
 
+require_dependency "courses/application_decorator"   # needed sometimes (I'm not sure when). Best to include it always.
+
 module Courses
 	class CourseDecorator < ApplicationDecorator
 		
@@ -45,19 +47,13 @@ module Courses
 			object.aasm.human_state
 		end
 
-		# def membership_scope( user )
-		# 	CourseMembership.extend( Courses::Scopes::Membership ).for_user( user ).for_course( object )
-		# end
-
+		# Returns one of :enrolled, :enrolled_provisionally or nil if not enrolled
 		def membership_status( user )
-			# Returns one of :enrolled, :enrolled_provisionally or :not_enrolled
 			memberships = membership_scope.for_user( user )
 			if memberships.confirmed.present?
 				:enrolled
 			elsif memberships.provisional.present?
 				:enrolled_provisionally
-			else
-				:not_enrolled
 			end
 		end
 
@@ -69,8 +65,75 @@ module Courses
 			membership_scope.for_user( user ).confirmed.first
 		end
 
+		def membership_for( user )
+			membership_scope.for_user( user ).first			
+		end
+
+		def provisional_memberships
+			course_memberships.provisional
+		end
+
+		def confirmed_memberships
+			course_memberships.confirmed
+		end
+
 		def may_delete?
 			policy( object ).delete?
+		end
+
+		def may_list_memberships?
+			policy( object ).list_memberships?
+		end
+		alias_method :may_list_members?, :may_list_memberships?
+
+		def thumbnail
+			image_tag 'http://via.placeholder.com/100x100', alt: "Thumbnail image of #{name}"
+		end
+
+		def dates_as_text
+			if started?
+				"Started on #{started_on} (ends on #{ends_on})"
+			else
+				"Starts on #{starts_on} (in about #{starts_on_dotiw})"
+			end
+		end
+
+		def status_as_hash( user=nil )
+			_status = status( user )
+			Hash.new.tap { |hash| hash[_status] = true if _status } 
+		end
+
+		def status_as_text( user=nil )
+			_status = status( user )
+			if _status
+				t "courses.status.#{_status}"
+			else
+				''
+			end
+		end
+
+		def created_by?( user )
+			owner == user
+		end
+
+		# def to_status( user=nil )
+		# 	@status ||= Status.new( self, user )
+		# end
+
+	private
+
+		def status( user=nil )
+			s = membership_status( user ) if user
+			unless s
+				if open_for_enrolment?
+					if has_space?
+						s = :open_for_enrolment
+					else
+						s = :full
+					end
+				end
+			end
+			s
 		end
 	end
 end

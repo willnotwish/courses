@@ -1,3 +1,4 @@
+
 module Courses
   module ApplicationHelper
 

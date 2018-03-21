@@ -1,21 +1,47 @@
 
 - decorate @course_membership do |cm|
 
-	h3 = cm.course_name
+  .course-membership
+    .course-membership__nav.course__nav--breadcrumbs
+      nav.breadcrumbs
+        = link_to 'Courses dashboard', :root
+        = link_to cm.course_name, cm.course
+        = link_to cm.member_name, cm, class: 'current'
 
-	- if cm.provisional?
-		- if cm.has_cost?
-			p This course costs #{cm.cost}
-		- else
-			p There is no charge for this course.
+    .course-membership__header
+      h3 = cm.course_name
 
-		- if cm.may_confirm?
-			p Your membership is <em>provisional</em>. Please #{link_to 'confirm it now', [:new, cm, :confirmation]}.
-		- elsif cm.payment_required?
-			p You need to pay before your membership is confirmed.
-			p = link_to [:new, cm, :paypal_token] do
-					'Go to checkout
-					= fa_icon 'long-arrow-right'
+      h2 
+        = cm.member_name
+        |&nbsp;
+        = cm.status_label
 
-	- else
-		p Your membership is confirmed. We look forward to meeting you.
+    .course-membership__detail
+      - if cm.paid?
+        'Paid #{cm.amount_paid} on #{cm.payment_date}. 
+        - if policy(cm.payment).show?
+          = link_to 'View payment details', main_app.url_for(cm.payment)
+
+      - else
+        alert-box.warning Not yet paid
+
+      hr
+
+      - if cm.belongs_to_current_user?
+
+        - if cm.provisional?
+          - if cm.has_cost?
+            p This course costs #{cm.cost}
+          - else
+            p There is no charge for this course.
+
+          - if cm.may_confirm?
+            p Your membership is <em>provisional</em>. Please #{link_to 'confirm it now', [:new, cm, :confirmation]}.
+          - elsif cm.payment_required?
+            p You need to pay before your membership is confirmed.
+            p = link_to [:new, cm, :paypal_token] do
+                'Go to checkout
+                = fa_icon 'long-arrow-right'
+
+        - else
+          p Your membership is confirmed. We look forward to meeting you.

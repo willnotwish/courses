@@ -35,6 +35,10 @@ module Courses
       course.may_restrict? && user_has_permission?( 'course.restrict' )
     end
 
+    def list_memberships?
+      user_has_permission?( 'course.list_memberships' )
+    end
+
   public
 
     class Scope < Scope

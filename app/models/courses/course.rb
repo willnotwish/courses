@@ -39,6 +39,10 @@ module Courses
 
     attr_accessor :enrolment_criteria
 
+    def to_partial_path
+      'course'
+    end
+
     class << self
       def with_membership_for( member )
         joins( :course_memberships ).merge( CourseMembership.for_member( member ) )

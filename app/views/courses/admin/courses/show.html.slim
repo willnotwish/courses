@@ -35,8 +35,9 @@
 		.course__detail
 			== render partial: 'course', object: course
 
-		hr
 		.course__members
+			hr
+			h3 Course members
 			- if course.empty?
 				p No one is currently enrolled on this course; #{course.places_available} places are available.
 			- else

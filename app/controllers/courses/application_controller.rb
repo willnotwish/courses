@@ -8,7 +8,9 @@ module Courses
 		include Pundit
 		rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  	include DecoratorHelpers
+  	# include DecoratorHelpers
+
+    helper_method :page_title, :page_subtitle
 
     respond_to :html, :json
 
@@ -16,5 +18,17 @@ module Courses
   		flash[:alert] = "You are not authorized to perform this action."
 	    redirect_to(request.referrer || main_app.root_path)	  		
   	end
+
+    def page_subtitle( text )
+      @subtitle = text
+    end
+
+    def page_title
+      if @subtitle.present?
+        "Courses - #{@subtitle}"
+      else
+        "Courses"
+      end
+    end
   end
 end
