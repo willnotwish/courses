@@ -35,6 +35,15 @@ module Courses
 				end
 				alias_method :enrolment_closed_on, :enrolment_closes_on
 
+				def enrolment_closed?
+					t = Time.now
+					if enrolment_closes_at.present?
+						t > enrolment_closes_at
+					else
+						false
+					end
+				end
+
 				def open_for_enrolment?
 					t = Time.now
 					if enrolment_opens_at.present? && enrolment_closes_at.present?

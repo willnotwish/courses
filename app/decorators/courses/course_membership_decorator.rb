@@ -4,7 +4,7 @@ require_dependency "courses/application_decorator"   # needed sometimes (I'm not
 module Courses
 	class CourseMembershipDecorator < ApplicationDecorator
 
-		delegate :course, :member, :payment, :aasm_state, :confirmed_at, :created_at, to: :object
+		delegate :course, :member, :payment, :aasm, :aasm_state, :confirmed_at, :created_at, to: :object
 		delegate :product, to: :course, allow_nil: true
 		delegate :price, to: :product, allow_nil: true
 

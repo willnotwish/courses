@@ -23,6 +23,7 @@ module Courses
 		         :published?,
 		         :restricted?,
 		         :include_provisional_in_capacity?,
+		         :aasm,
 			to: :object
 
 		include Decoration::Course::Timing
@@ -98,42 +99,8 @@ module Courses
 			end
 		end
 
-		def status_as_hash( user=nil )
-			_status = status( user )
-			Hash.new.tap { |hash| hash[_status] = true if _status } 
-		end
-
-		def status_as_text( user=nil )
-			_status = status( user )
-			if _status
-				t "courses.status.#{_status}"
-			else
-				''
-			end
-		end
-
 		def created_by?( user )
 			owner == user
-		end
-
-		# def to_status( user=nil )
-		# 	@status ||= Status.new( self, user )
-		# end
-
-	private
-
-		def status( user=nil )
-			s = membership_status( user ) if user
-			unless s
-				if open_for_enrolment?
-					if has_space?
-						s = :open_for_enrolment
-					else
-						s = :full
-					end
-				end
-			end
-			s
 		end
 	end
 end

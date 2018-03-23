@@ -2,6 +2,7 @@ require "courses/engine"
 
 require "courses/decoration"
 require "courses/scopes"
+require "courses/course_status"
 
 module Courses
   mattr_accessor :member_class
