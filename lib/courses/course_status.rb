@@ -9,34 +9,31 @@ module Courses
 		def elements
 			@elements ||= begin
 				a = []
-				if membership
-					a << "enrolment_#{membership.aasm.current_state}".to_sym
-					if course.full?
-						a << :full
-					else
-						a << :spaces
-					end
+				if course.draft?
+					a << :draft
 				else
-					if course.open_for_enrolment?
-						if course.has_space?
-							a << :open_for_enrolment
-							a << :spaces
-						else
-							a << :full
-						end
-					elsif course.enrolment_closed?
-						a << :enrolment_closed
+					if membership
+						a << "enrolment_#{membership.aasm.current_state}".to_sym
 					else
-						t0 = course.enrolment_opens_at
-						if t0 && t0 > Time.now
-							a << :not_yet_open_for_enrolment
-						# else
-						# 	a << course.aasm.current_state
+						if course.open_for_enrolment?
+							if course.has_space?
+								a << :open_for_enrolment
+								a << :spaces
+							else
+								a << :full
+							end
+						elsif course.enrolment_closed?
+							a << :enrolment_closed
+						else
+							t0 = course.enrolment_opens_at
+							a << :not_yet_open_for_enrolment if t0 && t0 > Time.now
 						end
-					end
-				end	
-				a.prepend :owner if user && course.owner == user
-				a
+					end	
+					a.push :owner if user && course.owner == user
+					a.push :free unless course.has_cost?
+					a.push :restricted if course.restricted?
+					a 
+				end
 			end
 		end
 	end

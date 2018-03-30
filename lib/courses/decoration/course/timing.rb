@@ -77,6 +77,15 @@ module Courses
 						duration / (24*7*60*60)
 					end
 				end
+
+				def finishes_at
+					has_duration? ? starts_at + duration : nil
+				end
+
+				def finished?
+					t = finishes_at
+					t ? t < Time.now : false
+				end
 			end
 		end
 	end

@@ -11,11 +11,13 @@
       h2 
         = course.name
         |&nbsp;
-        = course.status_label
-        |&nbsp;
-        - if course.started?
+        - if course.finished?
+          span.label.course-label--started finished
+          |&nbsp;
+        - elsif course.started?
           span.label.course-label--started started
           |&nbsp;
+
         - if course.has_space?
           span.label.success.course-label--has-space spaces
           |&nbsp;
@@ -50,7 +52,9 @@
 
     .course__detail
       hr
-      h4.subheader Starts on #{l course.starts_on, format: :long} at #{l course.starts_at, format: :time}
+      h4.subheader
+        = course.started? ? "Started " : "Starts "
+        |on #{l course.starts_on, format: :long} at #{l course.starts_at, format: :time}
 
       p = course.description
 
@@ -91,13 +95,11 @@
               i.fa.fa-trash
 
       - elsif !course.open_for_enrolment?
-        p.alert-box.warning 
-          i.fa.fa-exclamation-triangle
-          |&nbsp;You cannot enrol on this course right now. 
         - if course.before_enrolment_opens?
           |Enrolment doesn't open until #{l course.enrolment_opens_at}. Please come back then. Thanks for your interest.
         - elsif course.after_enrolment_closed?
-          |Enrolment is now closed. Thanks for your interest.
+          .alert-box.alert 
+            span data-c-tooltip="Enrolment closed on #{l course.enrolment_closed_on}" Enrolment is now closed. Thanks for your interest.
 
       - elsif course.full?
         p.alert.alert--warning We are sorry, but this course is full. Thanks for your interest.
