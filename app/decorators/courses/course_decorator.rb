@@ -93,7 +93,9 @@ module Courses
 
 		def dates_as_text
 			if started?
-				"Started on #{started_on} (ends on #{ends_on})"
+				text = "Started on #{started_on}"
+				text += " (ends on #{ends_on})" if ends_on
+				text
 			else
 				"Starts on #{starts_on} (in about #{starts_on_dotiw})"
 			end

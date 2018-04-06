@@ -18,7 +18,7 @@ module Courses
 				alias_method :started_on, :starts_on
 
 				def ends_on
-					(starts_at + duration).to_date
+					duration ? (starts_at + duration).to_date : nil
 				end
 
 				def ends_on_dotiw
