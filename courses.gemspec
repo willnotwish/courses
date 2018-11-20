@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.summary     = "Summary of Courses."
   s.description = "Description of Courses."
   s.license     = "MIT"
-  
+
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 5.1.4"
+  s.add_dependency "rails", "~> 5.2"
   s.add_dependency "mysql2"
   s.add_dependency "simple_form"
   s.add_dependency "responders"
